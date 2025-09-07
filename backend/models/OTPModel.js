@@ -1,27 +1,31 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const OTPSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
   },
-  password: {
+  OTP: {
     type: String,
+    required: true,
+  },
+  expiresAt: {
+    type: Date,
     required: true,
   },
   firstName: {
     type: String,
-    required: true,
   },
   lastName: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
-    enum: ["User", "Admin"],
+  },
+  password: {
+    type: String,
   },
 });
 
-const userModel = mongoose.model("userModel", userSchema);
-module.exports = userModel;
+const OTPModel = mongoose.model("OTPModel", OTPSchema);
+module.exports = OTPModel;

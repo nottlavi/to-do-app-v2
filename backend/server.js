@@ -5,8 +5,15 @@ const PORT = process.env.PORT;
 const userRoutes = require("./routes/userRoutes");
 //importing and connecting to db here
 const database = require("./config/database").connect();
+const cors = require("cors");
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 //the home page api
 app.get("/", (req, res) => {
