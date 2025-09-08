@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { useNavigate } from "react-router-dom";
 
 export const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const navigate = useNavigate();
 
   const handleLogIn = async (e) => {
     e.preventDefault();
@@ -12,12 +14,17 @@ export const LogIn = () => {
       const res = await axios.post(BASE_URL + "/user/login", {
         email,
         password,
-      });
+      }, {withCredentials: true});
       if (res) {
         console.log(res);
+        navigate("/");
       }
     } catch (err) {
-      console.log("error says hi from frontend");
+      if (err.response) {
+        console.log(err.response);
+      } else {
+        console.log("something went wrong");
+      }
     }
   };
 

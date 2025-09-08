@@ -6,14 +6,16 @@ const userRoutes = require("./routes/userRoutes");
 //importing and connecting to db here
 const database = require("./config/database").connect();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
-app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(cookieParser());
 
 //the home page api
 app.get("/", (req, res) => {

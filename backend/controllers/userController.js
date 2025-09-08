@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { sendMail } = require("../services/sendMail");
 const OTPModel = require("../models/OTPModel");
+const jwt = require("jsonwebtoken");
+const path = require("path");
+require("dotenv").config();
+const jwtSecret = process.env.JWT_SECRET;
 
 exports.signup = async (req, res) => {
   try {
@@ -50,7 +54,7 @@ exports.signup = async (req, res) => {
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
         firstName: firstName,
         lastName: lastName,
-        
+
         password: hashedPassword,
       });
       return res.status(200).json({
@@ -59,47 +63,6 @@ exports.signup = async (req, res) => {
         data: newOTPModel,
       });
     }
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
-
-exports.login = async (req, res) => {
-  try {
-    //fetching and checking if all the inputs are filled
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "all the fields are required",
-      });
-    }
-
-    //checking if user exists or not
-    const existingUser = await userModel.findOne({ email: email });
-    if (!existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "couldnt find a user associated with this account",
-      });
-    }
-
-    //checking if entered password matches with the one in db
-    if (!bcrypt.compare(password, existingUser.password)) {
-      return res.status(400).json({
-        success: false,
-        message: "the entered password is incorrect",
-      });
-    }
-
-    // returning success response
-    return res.status(200).json({
-      success: true,
-      message: "user logged in",
-    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -202,6 +165,83 @@ exports.resendOTP = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+exports.login = async (req, res) => {
+  try {
+    //fetching and checking if all the inputs are filled
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "all the fields are required",
+      });
+    }
+
+    //checking if user exists or not
+    const existingUser = await userModel.findOne({ email: email });
+    if (!existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "couldnt find a user associated with this account",
+      });
+    }
+
+    //checking if entered password matches with the one in db
+    if (!bcrypt.compare(password, existingUser.password)) {
+      return res.status(400).json({
+        success: false,
+        message: "the entered password is incorrect",
+      });
+    }
+
+    //assigning jwt to the user
+    const token = jwt.sign(
+      {
+        email: existingUser.email,
+        id: existingUser._id,
+        firstName: existingUser.firstName,
+        lastName: existingUser.lastName,
+      },
+      jwtSecret,
+      { expiresIn: "2h" }
+    );
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: false,
+      path: "/",
+      sameSite: "lax",
+    });
+
+    // returning success response
+    return res.status(200).json({
+      success: true,
+      message: "user logged in with following token",
+      token: token,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  const info = req.user;
+
+  if (!info) {
+    return res.status(400).json({
+      success: false,
+      message: "no user info found",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: info,
+  });
 };
 
 //for development purpose only
