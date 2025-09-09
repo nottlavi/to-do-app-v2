@@ -1,16 +1,23 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom"
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const VerifyEmail = () => {
   const [OTP, setOTP] = useState("");
+  const navigate = useNavigate();
+
+  //importing email here from redux
+  const email = useSelector((state) => state.auth.email);
 
   const verificationHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(BASE_URL + "/user/verify-email", { OTP });
+      const res = await axios.post(BASE_URL + "/user/verify-email", {email, OTP });
       if (res) {
         console.log(res.data);
+        navigate("/login")
       }
     } catch (err) {
       if (err.response) {

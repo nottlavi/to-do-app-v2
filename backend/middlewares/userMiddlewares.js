@@ -6,7 +6,6 @@ exports.verifyToken = (req, res, next) => {
 
   const token = req.cookies.access_token;
 
-
   if (!token)
     return res.status(401).json({
       success: false,
@@ -24,3 +23,9 @@ exports.verifyToken = (req, res, next) => {
     next();
   });
 };
+
+exports.isUser = (req, res, next) => {
+  const email = req.user.email;
+
+
+}

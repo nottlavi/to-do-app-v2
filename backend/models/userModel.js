@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["User", "Admin"],
   },
+  tasks: [
+    {
+      type: String,
+     
+    },
+  ],
 });
 
 const userModel = mongoose.model("userModel", userSchema);

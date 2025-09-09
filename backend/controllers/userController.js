@@ -229,19 +229,28 @@ exports.login = async (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-  const info = req.user;
+  try {
+    const userid = req.user.id;
 
-  if (!info) {
-    return res.status(400).json({
+    const user = await userModel.findById(userid).populate("tasks").exec();
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "error fetching the logged in user",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    return res.status(500).json({
       success: false,
-      message: "no user info found",
+      message: err.message,
     });
   }
-
-  return res.status(200).json({
-    success: true,
-    data: info,
-  });
 };
 
 //for development purpose only

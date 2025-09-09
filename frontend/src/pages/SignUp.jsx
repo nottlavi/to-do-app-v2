@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setEmail as setAuthEmail } from "../slices/authSlice";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const SignUp = () => {
@@ -9,6 +11,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ export const SignUp = () => {
       });
       if (res) {
         console.log(res.data);
+         dispatch(setAuthEmail(email));
         navigate("/verify-email");
       }
     } catch (err) {
@@ -35,7 +39,6 @@ export const SignUp = () => {
     }
   };
 
- 
   return (
     <div>
       <form onSubmit={signUpHandler}>
@@ -97,7 +100,7 @@ export const SignUp = () => {
           <input
             name="confirmPassword"
             id="confirmPassword"
-            type="confirmPassword"
+            type="password"
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);

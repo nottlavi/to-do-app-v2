@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const database = require("./config/database").connect();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const taskRoutes = require("./routes/taskRoutes");
 
 app.use(
   cors({
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 //the local apis
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/task", taskRoutes);
 
 app.listen(PORT, () => {
   console.log("server started on port no.:", PORT);
