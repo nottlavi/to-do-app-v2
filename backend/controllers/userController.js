@@ -5,6 +5,7 @@ const { sendMail } = require("../services/sendMail");
 const OTPModel = require("../models/OTPModel");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const { access } = require("fs");
 require("dotenv").config();
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -244,6 +245,30 @@ exports.getProfile = async (req, res) => {
     return res.status(200).json({
       success: true,
       data: user,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.logOut = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(200).json({
+        success: false,
+        message: "no token found",
+      });
+    }
+
+    res.clearCookie("access_token", { path: "/" });
+
+    return res.status(200).json({
+      success: true,
+      message: "user logged out",
     });
   } catch (err) {
     return res.status(500).json({

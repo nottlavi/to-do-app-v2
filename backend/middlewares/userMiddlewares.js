@@ -23,9 +23,3 @@ exports.verifyToken = (req, res, next) => {
     next();
   });
 };
-
-exports.isUser = (req, res, next) => {
-  const email = req.user.email;
-
-
-}

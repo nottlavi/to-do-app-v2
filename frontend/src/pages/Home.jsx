@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { UserHome } from "./components/homepage/UserHome";
+import { GuestHome } from "./components/homepage/GuestHome";
 
 export const Home = () => {
   const [user, setUser] = useState(null);
@@ -26,5 +27,15 @@ export const Home = () => {
     fetchUser();
   }, [BASE_URL]);
 
-  return <div>{user ? <UserHome /> : <div>Hello guest</div>}</div>;
+  return (
+    <div>
+      {user ? (
+        <UserHome />
+      ) : (
+        <div>
+          <GuestHome />
+        </div>
+      )}
+    </div>
+  );
 };

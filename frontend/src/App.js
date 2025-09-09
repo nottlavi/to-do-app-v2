@@ -6,10 +6,12 @@ import { SignUp } from "./pages/SignUp";
 import { LogIn } from "./pages/LogIn";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import { NotFound } from "./pages/NotFound";
+import { NavBar } from "./pages/NavBar";
 
 function App() {
   return (
     <div>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
