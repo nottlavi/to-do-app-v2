@@ -9,8 +9,11 @@ const authSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
+    clearEmail: (state) => {
+      state.email = "";
+    },
   },
 });
 
-export const { setEmail } = authSlice.actions;
+export const { setEmail, clearEmail } = authSlice.actions;
 export default authSlice.reducer;

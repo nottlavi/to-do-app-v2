@@ -28,7 +28,7 @@ export const Home = () => {
   }, [BASE_URL]);
 
   return (
-    <div>
+    <div className="flex mt-10  justify-center" >
       {user ? (
         <UserHome />
       ) : (

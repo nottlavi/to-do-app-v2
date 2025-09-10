@@ -10,7 +10,7 @@ import { NavBar } from "./pages/NavBar";
 
 function App() {
   return (
-    <div>
+    <div className="h-screen bg-gradient-to-r from-[#2c5364] via-[#203a43] to-[#0f2027]">
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />

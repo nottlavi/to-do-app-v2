@@ -27,7 +27,7 @@ export const SignUp = () => {
       });
       if (res) {
         console.log(res.data);
-         dispatch(setAuthEmail(email));
+        dispatch(setAuthEmail(email));
         navigate("/verify-email");
       }
     } catch (err) {
@@ -40,75 +40,84 @@ export const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="flex mt-24 justify-center">
       <form onSubmit={signUpHandler}>
-        {/* for first name */}
-        <div>
-          <label htmlFor="firstName">First Name: </label>
-          <input
-            name="firstName"
-            id="firstName"
-            type="text"
-            value={firstName}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-          />
+        <div className="flex flex-col gap-3 text-gray-400 text-2xl items-left ">
+          {/* for first name */}
+          <div>
+            <label htmlFor="firstName">First Name: </label>
+            <input
+              name="firstName"
+              id="firstName"
+              type="text"
+              value={firstName}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg px-2  focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* for last name */}
+          <div>
+            <label htmlFor="lastName">Last Name: </label>
+            <input
+              name="lastName"
+              id="lastName"
+              type="text"
+              value={lastName}
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2  focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* for password */}
+          <div>
+            <label htmlFor="password">Password: </label>
+            <input
+              name="password"
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2  focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* for email*/}
+          <div>
+            <label htmlFor="email">Email: </label>
+            <input
+              name="email"
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2  focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* for confirm password*/}
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password: </label>
+            <input
+              name="confirmPassword"
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2  focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* sign up button */}
+          <button type="submit" className="bg-slate-500 px-6 py-2 rounded-2xl">
+            Sign Up
+          </button>
         </div>
-        {/* for last name */}
-        <div>
-          <label htmlFor="lastName">Last Name: </label>
-          <input
-            name="lastName"
-            id="lastName"
-            type="text"
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-          />
-        </div>
-        {/* for password */}
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input
-            name="password"
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
-        {/* for email*/}
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            name="email"
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
-        {/* for confirm password*/}
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password: </label>
-          <input
-            name="confirmPassword"
-            id="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
-          />
-        </div>
-        {/* sign up button */}
-        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

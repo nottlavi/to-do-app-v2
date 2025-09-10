@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { clearEmail } from "../slices/authSlice";
 
 export const NavBar = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const email = useSelector((state) => state.auth.email);
 
@@ -16,7 +18,7 @@ export const NavBar = () => {
       const res = await axios.get(`${BASE_URL}/user/logout`, {
         withCredentials: true,
       });
-      setReload((prev) => !prev);
+      dispatch(clearEmail());
     } catch (err) {
       if (err.response) {
         console.log(err.response);
@@ -33,14 +35,34 @@ export const NavBar = () => {
     navigate("/login");
   };
 
+  useEffect(() => {});
+
   return (
-    <div className="flex justify-between bg-slate-500 text-white px-10">
-      <Link to={"/"}>Glory</Link>
+    <div className="flex justify-between bg-slate-500 text-white px-10 h-14 items-center bg-opacity-50">
+      <Link to={"/"} className="text-4xl tracking-wider">
+        glory
+      </Link>
       <div className="gap-4 flex">
-        <button onClick={email ? logOutHandler : loginHandler}>
-          {email ? "logout" : "login"}
-        </button>
-        <button onClick={signUpHandler}>{email ? "" : "signup"}</button>
+        {email ? (
+          <div>
+            <button onClick={logOutHandler}>logout</button>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <button
+              className="bg-slate-500 px-6 py-2 rounded-2xl"
+              onClick={loginHandler}
+            >
+              login
+            </button>
+            <button
+              className="bg-slate-500 px-6 py-2 rounded-2xl"
+              onClick={signUpHandler}
+            >
+              sign up
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

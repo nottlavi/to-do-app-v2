@@ -11,10 +11,14 @@ export const LogIn = () => {
   const handleLogIn = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(BASE_URL + "/user/login", {
-        email,
-        password,
-      }, {withCredentials: true});
+      const res = await axios.post(
+        BASE_URL + "/user/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (res) {
         console.log(res);
         navigate("/");
@@ -29,33 +33,39 @@ export const LogIn = () => {
   };
 
   return (
-    <div>
+    <div className="flex mt-24 justify-center">
       <form onSubmit={handleLogIn}>
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            name="email"
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
+        <div className="flex flex-col gap-3 text-gray-400 text-2xl items-left">
+          <div>
+            <label htmlFor="email">Email: </label>
+            <input
+              name="email"
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2   focus:outline-none focus:ring-0"
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password: </label>
+            <input
+              name="password"
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              className="bg-slate-500 rounded-lg  px-2   focus:outline-none focus:ring-0"
+            />
+          </div>
+          <button type="submit" className="bg-slate-500 px-6 py-2 rounded-2xl">
+            Log In
+          </button>
         </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input
-            name="password"
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
-        <button type="submit">Log In</button>
       </form>
     </div>
   );
