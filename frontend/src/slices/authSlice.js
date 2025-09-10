@@ -12,8 +12,14 @@ const authSlice = createSlice({
     clearEmail: (state) => {
       state.email = "";
     },
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
+    clearToken: (state, action) => {
+      state.token = "";
+    },
   },
 });
 
-export const { setEmail, clearEmail } = authSlice.actions;
+export const { setEmail, clearEmail, setToken, clearToken } = authSlice.actions;
 export default authSlice.reducer;

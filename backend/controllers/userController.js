@@ -188,8 +188,8 @@ exports.login = async (req, res) => {
       });
     }
 
-    //checking if entered password matches with the one in db
-    if (!bcrypt.compare(password, existingUser.password)) {
+    // checking if entered password matches with the one in db
+    if (!(await bcrypt.compare(password, existingUser.password))) {
       return res.status(400).json({
         success: false,
         message: "the entered password is incorrect",

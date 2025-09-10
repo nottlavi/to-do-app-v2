@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setEmail as setAuthEmail } from "../slices/authSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { Spinner } from "./Spinner";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const SignUp = () => {
@@ -12,12 +14,14 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const signUpHandler = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await axios.post(BASE_URL + "/user/signup", {
         firstName,
         lastName,
@@ -30,9 +34,12 @@ export const SignUp = () => {
         dispatch(setAuthEmail(email));
         navigate("/verify-email");
       }
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       if (err.response) {
         console.log(err.response);
+        toast.error(err.response.data.message);
       } else {
         console.log("something went wrong");
       }
@@ -41,6 +48,7 @@ export const SignUp = () => {
 
   return (
     <div className="flex mt-24 justify-center">
+      <ToastContainer />
       <form onSubmit={signUpHandler}>
         <div className="flex flex-col gap-3 text-gray-400 text-2xl items-left ">
           {/* for first name */}
@@ -113,10 +121,19 @@ export const SignUp = () => {
               className="bg-slate-500 rounded-lg  px-2  focus:outline-none focus:ring-0"
             />
           </div>
-          {/* sign up button */}
-          <button type="submit" className="bg-slate-500 px-6 py-2 rounded-2xl">
-            Sign Up
-          </button>
+          <div className="flex justify-center mt-6">
+            {/* sign up button */}
+            {loading ? (
+              <Spinner className="w-full" />
+            ) : (
+              <button
+                type="submit"
+                className="bg-slate-500 px-6 py-2 rounded-2xl w-full"
+              >
+                Sign Up
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>
